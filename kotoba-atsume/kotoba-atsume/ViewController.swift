@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UISearchBarDelegate {
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +18,9 @@ class ViewController: UIViewController, UISearchBarDelegate {
         searchText.delegate = self
         //入力のヒントとなる、プレースホルダーを設定
         searchText.placeholder = "検索キーワードを入力してください"
+        
+        //TableViewのdataSourceを設定
+        tableView.dataSource = self
     }
 
     @IBOutlet weak var searchText: UISearchBar!
@@ -89,7 +92,7 @@ class ViewController: UIViewController, UISearchBarDelegate {
         guard let req_url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=\(keyword_encode)") else{
             return
         }
-        print(req_url)
+//        print(req_url)
         
         //リクエストに必要な情報を生成
         let req = URLRequest(url: req_url)
@@ -109,9 +112,9 @@ class ViewController: UIViewController, UISearchBarDelegate {
                 //受け取ったJSONデータをバース（解析）して格納
                 let json = try decoder.decode(ResultJson.self, from: data!)
                 
-                //                print("jsonを出力")
+                //print("jsonを出力")
+//                print(json)
                 
-                print(json)
                 //本の情報が取得できているか確認
                 if let itemsInfo = json.items {
                     
@@ -139,12 +142,16 @@ class ViewController: UIViewController, UISearchBarDelegate {
                             )
                             //本の配列へ追加
                             self.searchBookList.append(book)
-                            print(book)
+//                            print(book)
                         }
                     }
+                    
+                    //Table View　を更新する
+                    self.tableView.reloadData()
+                    
                     if let bookdbg = self.searchBookList.first {
-                        print("------------------")
-                        print("bookList[0] = \(bookdbg)")
+//                        print("------------------")
+//                        print("bookList[0] = \(bookdbg)")
                     }
                 }
             } catch {
@@ -156,5 +163,27 @@ class ViewController: UIViewController, UISearchBarDelegate {
         task.resume()
     }
     
+    
+    //Cellの総数を返すdataSourceメソッド（必須）
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //本のリストの総数
+        return searchBookList.count
+    }
+    
+    //Cellに値を設定するdataSrouceメソッド（必須）
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //今回表示を行う、Cellオブジェクト（１行）を取得する
+        let cell = tableView.dequeueReusableCell(withIdentifier: "bookCell", for: indexPath)
+        
+        //本のタイトルを取得
+        cell.textLabel?.text = searchBookList[indexPath.row].title
+        //本の画像を取得
+        if let imageData = try? Data(contentsOf: searchBookList[indexPath.row].imageLinks.smallThumbnail!) {
+            //正常に取得できた場合は、UIImageで画像オブジェクトを生成して、Cellに本の画像を設定
+            cell.imageView?.image = UIImage(data: imageData)
+        }
+        //設定済みのCellオブジェクトを画面に反映
+        return cell
+    }
 }
 
