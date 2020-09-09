@@ -17,7 +17,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         //Search Barのdelegate通知先を設定
         searchText.delegate = self
         //入力のヒントとなる、プレースホルダーを設定
-        searchText.placeholder = "検索キーワードを入力してください"
+        searchText.placeholder = "検索キーワードを入力。表示件数20件まで"
         
         //TableViewのdataSourceを設定
         tableView.dataSource = self
@@ -89,7 +89,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         }
         
         //リクエストURLの組み立て
-        guard let req_url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=\(keyword_encode)") else{
+        guard let req_url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=\(keyword_encode)&maxResults=20&startIndex=1") else{
             return
         }
 //        print(req_url)
@@ -112,8 +112,8 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
                 //受け取ったJSONデータをバース（解析）して格納
                 let json = try decoder.decode(ResultJson.self, from: data!)
                 
-                //print("jsonを出力")
-//                print(json)
+                print("jsonを出力")
+                print(json)
                 
                 //本の情報が取得できているか確認
                 if let itemsInfo = json.items {
