@@ -13,6 +13,8 @@
 		100639842507792C00B72087 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 100639822507792C00B72087 /* Main.storyboard */; };
 		100639862507792F00B72087 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 100639852507792F00B72087 /* Assets.xcassets */; };
 		100639892507792F00B72087 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 100639872507792F00B72087 /* LaunchScreen.storyboard */; };
+		109C39512514CC44003D27D4 /* BookDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109C39502514CC44003D27D4 /* BookDetail.swift */; };
+		109C39532514CC50003D27D4 /* BookDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 109C39522514CC50003D27D4 /* BookDetail.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		100639852507792F00B72087 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		100639882507792F00B72087 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1006398A2507792F00B72087 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		109C39502514CC44003D27D4 /* BookDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetail.swift; sourceTree = "<group>"; };
+		109C39522514CC50003D27D4 /* BookDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BookDetail.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				100639852507792F00B72087 /* Assets.xcassets */,
 				100639872507792F00B72087 /* LaunchScreen.storyboard */,
 				1006398A2507792F00B72087 /* Info.plist */,
+				109C39502514CC44003D27D4 /* BookDetail.swift */,
+				109C39522514CC50003D27D4 /* BookDetail.storyboard */,
 			);
 			path = "kotoba-atsume";
 			sourceTree = "<group>";
@@ -127,6 +133,7 @@
 			files = (
 				100639892507792F00B72087 /* LaunchScreen.storyboard in Resources */,
 				100639862507792F00B72087 /* Assets.xcassets in Resources */,
+				109C39532514CC50003D27D4 /* BookDetail.storyboard in Resources */,
 				100639842507792C00B72087 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				100639812507792C00B72087 /* ViewController.swift in Sources */,
+				109C39512514CC44003D27D4 /* BookDetail.swift in Sources */,
 				1006397D2507792C00B72087 /* AppDelegate.swift in Sources */,
 				1006397F2507792C00B72087 /* SceneDelegate.swift in Sources */,
 			);

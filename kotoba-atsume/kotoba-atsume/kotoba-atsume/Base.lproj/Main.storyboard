@@ -62,11 +62,20 @@
                     <connections>
                         <outlet property="searchText" destination="H2g-YW-0kU" id="Pib-ce-PNq"/>
                         <outlet property="tableView" destination="hXn-8m-5AV" id="V2h-0B-UJe"/>
+                        <segue destination="GRI-Rz-kUu" kind="presentation" identifier="BookDetail" id="0QC-pr-1PK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="118.52678571428571"/>
+        </scene>
+        <!--BookDetail-->
+        <scene sceneID="mlJ-vA-5pE">
+            <objects>
+                <viewControllerPlaceholder storyboardName="BookDetail" id="GRI-Rz-kUu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l3l-0Z-75r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="918" y="119"/>
         </scene>
     </scenes>
 </document>

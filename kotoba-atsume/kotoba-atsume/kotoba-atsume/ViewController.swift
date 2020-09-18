@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource {
-
+class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -21,8 +21,12 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         
         //TableViewのdataSourceを設定
         tableView.dataSource = self
+        
+        //セルを選択するのに必要。
+        tableView.delegate = self
+        
     }
-
+    
     @IBOutlet weak var searchText: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
@@ -68,22 +72,22 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
     }
     
     // JSONのItems内のデータ構造
-       struct ItemsJson: Codable {
-           let volumeInfo: VolumeInfoJson?
-       }
-       
-       //JSONのデータ構造
-       struct ResultJson: Codable {
-           //複数要素
-           let kind: String?
-           let totalItems: Int?
-           let items:[ItemsJson]?
-       }
+    struct ItemsJson: Codable {
+        let volumeInfo: VolumeInfoJson?
+    }
+    
+    //JSONのデータ構造
+    struct ResultJson: Codable {
+        //複数要素
+        let kind: String?
+        let totalItems: Int?
+        let items:[ItemsJson]?
+    }
     
     //searchBookメソッド
     //第一引数: keyword 検索したいワード
     func searchBook(keyword : String) {
-        //お菓子の検索キーワードをURLエンコードする
+        //本の検索キーワードをURLエンコードする
         guard let keyword_encode = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return
         }
@@ -92,7 +96,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         guard let req_url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=\(keyword_encode)&maxResults=20&startIndex=1") else{
             return
         }
-//        print(req_url)
+                print(req_url)
         
         //リクエストに必要な情報を生成
         let req = URLRequest(url: req_url)
@@ -142,7 +146,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
                             )
                             //本の配列へ追加
                             self.searchBookList.append(book)
-//                            print(book)
+                            //                            print(book)
                         }
                     }
                     
@@ -150,8 +154,8 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
                     self.tableView.reloadData()
                     
                     if let bookdbg = self.searchBookList.first {
-//                        print("------------------")
-//                        print("bookList[0] = \(bookdbg)")
+                        //                        print("------------------")
+                        print("bookList[0] = \(bookdbg)")
                     }
                 }
             } catch {
@@ -185,5 +189,78 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         //設定済みのCellオブジェクトを画面に反映
         return cell
     }
+    
+    //bookCellが選択された時に呼び出されるdelegateメソッド
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("セルがタップされました。")
+        
+        //本の情報を定義する
+        let titleText = searchBookList[indexPath.row].title
+        let authorsText:[String?] = searchBookList[indexPath.row].authors
+        let publisherText:String? = searchBookList[indexPath.row].publisher
+        let industryIdentifiersText = searchBookList[indexPath.row].industryIdentifiers
+        let imageLinksURL = searchBookList[indexPath.row].imageLinks
+        let previewLinkURL = searchBookList[indexPath.row].previewLink
+        
+        // セルの選択を解除
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        //【次の画面へ値を渡す】
+        // 構造体
+        let item :VolumeInfoJson = VolumeInfoJson(
+            title: titleText,
+            authors: (authorsText as! [String]),
+            publisher: publisherText,
+            imageLinks: imageLinksURL,
+            industryIdentifiers: industryIdentifiersText,
+            previewLink: previewLinkURL
+        )
+        
+        print(titleText as Any,authorsText as Any,publisherText as Any,industryIdentifiersText as Any,imageLinksURL as Any,previewLinkURL as Any)
+        print("--------------")
+        // 別の画面に遷移
+        self.performSegue(withIdentifier: "BookDetail", sender: item)
+        
+    }
+    
+    
+    /// 画面遷移イベントをフックする
+    /// - Parameters:
+    ///   - segue: segue
+    ///   - sender: パラメータ
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let bookDetail = segue.destination as? BookDetail {
+            
+            if let paramater: VolumeInfoJson = sender as? VolumeInfoJson {
+                // 複数のパラメータがある場合は、一つずつ渡してあげる
+                bookDetail.titleText = paramater.title
+                bookDetail.publisherText = paramater.publisher
+                bookDetail.authorsText = paramater.authors
+
+                print(paramater.industryIdentifiers)
+            }
+        }
+    }
+    
 }
 
+//json.items[0].volumeInfo.title
+//            authors: (authorsText as! [String]),
+
+
+
+//let authorsText:[String?] = searchBookList[indexPath.row].authors
+//
+//title: titleText,
+//authors: (authorsText as! [String]),
+//publisher: publisherText,
+//imageLinks: imageLinksURL,
+//industryIdentifiers: industryIdentifiersText,
+//previewLink: previewLinkURL
+//
+//var titleText: String!
+//var authorsText: String!
+//var publisherText: String!
+//var imageLinksURL: URL!
+//var industryIdentifiersText: String!
+//var previewLinkURL: URL!
