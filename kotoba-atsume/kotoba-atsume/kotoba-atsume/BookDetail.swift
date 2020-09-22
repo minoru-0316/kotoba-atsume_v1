@@ -20,13 +20,14 @@ class BookDetail: UIViewController {
     @IBOutlet weak var industryIdentifer: UILabel!
     @IBOutlet weak var previewLink: UILabel!
     
-
+    
+    
     
     var titleText: String?
     var authorsText: [String]?
     var publisherText: String?
-    var imageLinksURL: URL?
-    var industryIdentifiersText: String?
+    var imageLink: URL?
+    var industryIdentifiersText: [String]?
     var previewLinkURL: URL?
     
     
@@ -35,14 +36,24 @@ class BookDetail: UIViewController {
         
         print("詳細画面が開いた")
         self.BookTitle.text = self.titleText
-        self.publisher.text = self.publisherText
-            if publisherText == nil {
-                self.publisher.text = "情報がありません"
-                self.publisher.textColor = UIColor.red
-            }
-//        self.authors.text = self.authorsText
         
+        self.publisher.text = self.publisherText
+        if publisherText == nil {
+            self.publisher.text = "情報がありません"
+            self.publisher.textColor = UIColor.red
+        }
+        self.authors.text = self.authorsText!.joined(separator: "、")
+        
+
     }
     
     
+    @IBAction func registerToBookshelf(_ sender: Any) {
+        print("本棚へ登録 ボタンが押された")
+    }
+    
+    
+    @IBAction func registerToConcern(_ sender: Any) {
+        print("気になるへ登録 ボタンが押された")
+    }
 }

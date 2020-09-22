@@ -48,11 +48,13 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
     // imageLinkのデータ構造
     struct  ImageLinkJson: Codable {
         let smallThumbnail: URL?
+        let thumbnail: URL?
     }
     
     // isbnLinkのデータ構造
     struct  industryIdentifiersJson: Codable {
-        let identifier: String?
+        let type: String
+        let identifier: String
     }
     
     //VolumeInfoJson内のデータ構造
@@ -96,7 +98,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         guard let req_url = URL(string: "https://www.googleapis.com/books/v1/volumes?q=\(keyword_encode)&maxResults=20&startIndex=1") else{
             return
         }
-                print(req_url)
+        print(req_url)
         
         //リクエストに必要な情報を生成
         let req = URLRequest(url: req_url)
@@ -196,7 +198,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
         
         //本の情報を定義する
         let titleText = searchBookList[indexPath.row].title
-        let authorsText:[String?] = searchBookList[indexPath.row].authors
+        let authorsText:[String] = searchBookList[indexPath.row].authors as! [String]
         let publisherText:String? = searchBookList[indexPath.row].publisher
         let industryIdentifiersText = searchBookList[indexPath.row].industryIdentifiers
         let imageLinksURL = searchBookList[indexPath.row].imageLinks
@@ -216,6 +218,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
             previewLink: previewLinkURL
         )
         
+        print(item)
         print(titleText as Any,authorsText as Any,publisherText as Any,industryIdentifiersText as Any,imageLinksURL as Any,previewLinkURL as Any)
         print("--------------")
         // 別の画面に遷移
@@ -236,31 +239,18 @@ class ViewController: UIViewController, UISearchBarDelegate, UITableViewDataSour
                 bookDetail.titleText = paramater.title
                 bookDetail.publisherText = paramater.publisher
                 bookDetail.authorsText = paramater.authors
-
-                print(paramater.industryIdentifiers)
+                
+//                                bookDetail.imageLink = paramater.imageLinks
+                //                bookDetail.industryIdentifiersText = paramater.industryIdentifiers
+                //                bookDetail.previewLinkURL = paramater.previewLinkURL
+                
+                print(paramater.imageLinks)
+                print(type(of: paramater.imageLinks))
+                print(type(of: paramater.authors))
+                
             }
         }
     }
     
 }
 
-//json.items[0].volumeInfo.title
-//            authors: (authorsText as! [String]),
-
-
-
-//let authorsText:[String?] = searchBookList[indexPath.row].authors
-//
-//title: titleText,
-//authors: (authorsText as! [String]),
-//publisher: publisherText,
-//imageLinks: imageLinksURL,
-//industryIdentifiers: industryIdentifiersText,
-//previewLink: previewLinkURL
-//
-//var titleText: String!
-//var authorsText: String!
-//var publisherText: String!
-//var imageLinksURL: URL!
-//var industryIdentifiersText: String!
-//var previewLinkURL: URL!
